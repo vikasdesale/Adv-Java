@@ -1,0 +1,111 @@
+package CollegePrograms;
+import java.awt.*;
+
+import javax.swing.*;
+
+public class JRadioBtnForm extends JFrame{
+	JLabel[] label;
+	JPanel[] panel;
+	public JRadioBtnForm() {
+		
+		super("Swing Frame");
+		setLayout(new GridLayout(20, 1));
+		
+		panel = new JPanel[20];
+		
+		for(int i = 0; i < 20; i++)
+		{
+			panel[i] = new JPanel();
+			panel[i].setLayout(new FlowLayout());
+		}
+		
+		label = new JLabel[10];
+		
+		label[0] = new JLabel("1. How many JDBC driver types does Sun defines? ");
+		label[1] = new JLabel("2. Who invented JAVA ? ");
+		label[2] = new JLabel("3. To run compiled Java program, the machine must have what loaded and running ");
+		label[3] = new JLabel("4. ___ is a open source DBMS product that runs on Linux and Windows");
+		label[4] = new JLabel("5. What MySQL property is used to create a surrogate key in MySQL?");
+		label[5] = new JLabel("6. A JSP is transformed into ___ ");
+		label[6] = new JLabel("7. What programming or scripting language does JSP support?");
+		label[7] = new JLabel("8. What is Bytecode ? ");
+		label[8] = new JLabel("9. How many copies of JSP page can be in memory at a time?");
+		label[9] = new JLabel("10. What JDBC driver type(s) is (are) the JDBC ODBC bridge");
+		
+		
+		setSize(new Dimension(1250, 700));
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		Options[] options = new Options[10];
+		
+		options[0] = new Options("A. One", "B. Two", "C. Three", "D. Four");
+		options[1] = new Options("A. Netscape", "B. Microsoft", "C. Sun", "D. None of these");
+		options[2] = new Options("A. JVM", "B. JC", "C. Java Bytecode", "D. Browser");
+		options[3] = new Options("A. MySQL", "B. JSP/SQL", "C. JDBC/SQL", "D. Sun Access");
+		options[4] = new Options("A. UNIQUE", "B. SEQUENCE", "C. AUTO INCREMENT", "D. None of these");
+		options[5] = new Options("A. Java applet", "B. Java servlet", "C. All above", "D. None");
+		options[6] = new Options("A. VBScript", "B. JScript", "C. Java", "D. All above");
+		options[7] = new Options("A. Machine specific code", "B. Java code", "C. machine independent code", "D. None of these");
+		options[8] = new Options("A. One", "B. Two", "C. Three", "D. Unlimited");
+		options[9] = new Options("A. Type 1", "B. Type 2", "C. Type 3", "D. Type  4");
+		
+		for(int i = 0, j = 0; i < 20 && j < 10; i += 2, j++)
+		{
+			panel[i].add(label[j]);
+		}
+		
+		for(int i = 0, k = 1; i < 10 && k < 20; i++, k += 2)
+		{
+			
+			for(int j = 0; j < 4; j++)
+			{
+				panel[k].add(options[i].jrbtn[j]);
+			}
+		}
+		
+		for(int i = 0; i < 20; i++)
+		{
+			add(panel[i]);
+		}
+		add(new JButton("Submit")).setSize(new Dimension(10, 5));
+		setVisible(true);
+
+	}
+	public static void main(String[] args) 
+	{
+		SwingUtilities.invokeLater(new Runnable()
+		{
+			public void run() 
+			{
+					new JRadioBtnForm();
+			}
+		});
+	}
+
+
+}
+
+
+//Option Class
+package CollegePrograms;
+
+import javax.swing.*;
+
+
+public class Options {
+	public JRadioButton[] jrbtn;
+	public Options(String a, String b, String c, String d) {
+		jrbtn = new JRadioButton[4];
+		jrbtn[0] = new JRadioButton(a);
+		jrbtn[1] = new JRadioButton(b);
+		jrbtn[2] = new JRadioButton(c);
+		jrbtn[3] = new JRadioButton(d);
+		
+		ButtonGroup group = new ButtonGroup();
+		for(JRadioButton r : jrbtn)
+		{
+			group.add(r);
+		}
+
+	}
+
+}

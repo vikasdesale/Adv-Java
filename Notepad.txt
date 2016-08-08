@@ -1,0 +1,92 @@
+import java.awt.*;
+import java.awt.event.*;
+
+import javax.swing.*;
+
+@SuppressWarnings("unused")
+public class notepad {
+	Frame frame;
+	TextArea txt;
+	MenuBar menubar;
+	public notepad()
+	{
+		frame = new Frame();
+		txt =  new TextArea();
+		menubar = new MenuBar();
+		
+		//JMenu file created
+		Menu Filemenu = new Menu("File");
+		
+		//JMenuItems in file menu
+		MenuItem newFile = new MenuItem("New");
+		MenuItem openFile = new MenuItem("Open");
+		MenuItem saveFile = new MenuItem("Save");
+		MenuItem exitFile = new MenuItem("Exit");
+		
+		//Adding items to file
+		Filemenu.add(newFile);
+		Filemenu.add(openFile);
+		Filemenu.add(saveFile);
+		Filemenu.addSeparator();
+		Filemenu.add(exitFile);
+		
+		//JMenu edit created
+		Menu Editmenu = new Menu("Edit");
+		
+		//JMenuItems in edit menu
+		MenuItem copyEdit = new MenuItem("Copy");
+		MenuItem cutEdit = new MenuItem("Cut");
+		MenuItem pasteEdit = new MenuItem("Paste");
+		
+		//Adding items to edit
+		Editmenu.add(copyEdit);
+		Editmenu.add(cutEdit);
+		Editmenu.add(pasteEdit);
+		
+
+		Menu Formatmenu = new Menu("Format");
+		
+		MenuItem wwFormat = new MenuItem("Word Wrap");
+		MenuItem fontFormat = new MenuItem("Font..");
+		
+		Formatmenu.add(wwFormat);
+		Formatmenu.add(fontFormat);
+
+		Menu Viewmenu = new Menu("View");
+		
+		MenuItem statusbarView = new MenuItem("Status Bar");
+		
+		Viewmenu.add(statusbarView);
+
+		Menu Helpmenu = new Menu("Help");
+		
+		MenuItem viewHelp = new MenuItem("View Help");
+		MenuItem aboutHelp = new MenuItem("About Notepad");
+		
+		Helpmenu.add(viewHelp);
+		Helpmenu.addSeparator();
+		Helpmenu.add(aboutHelp);
+		
+		menubar.add(Filemenu);
+		menubar.add(Editmenu);
+		menubar.add(Formatmenu);
+		menubar.add(Viewmenu);
+		menubar.add(Helpmenu);
+		frame.setVisible(true);
+		frame.setSize(500, 450);
+		
+		frame.setMenuBar(menubar);
+		frame.addWindowListener(new WindowAdapter() {
+			public void windowClosing(WindowEvent we){
+				System.exit(0);
+			}
+
+		});
+	}
+	
+	public static void main(String[] args) {
+		new notepad();
+
+	}
+	
+}

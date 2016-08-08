@@ -1,0 +1,67 @@
+package CollegePrograms;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.Statement;
+
+import javax.swing.SwingUtilities;
+
+public class UpdateQuery {
+
+	public UpdateQuery() {
+		try {
+			Class.forName("oracle.jdbc.driver.OracleDriver");
+			String url = "jdbc:oracle:thin:@localhost:1521:xe";
+			Connection cn = DriverManager.getConnection(url, "system", "system");
+			Statement stmt = cn.createStatement();
+			ResultSet rs1 = stmt.executeQuery("Select * from Employee");
+			
+			System.out.println("Table before Update");
+			while(rs1.next())
+			{
+				
+				System.out.println("EId : " + rs1.getInt("EId") + " , Name : " + rs1.getString("EName") + " , Salary : " + rs1.getInt("Salary"));
+			}
+	
+			System.out.println("Table after Update");
+			stmt.executeUpdate("Update Employee set EName='Keshav' where Salary=45000");
+			ResultSet rs = stmt.executeQuery("Select * from Employee");
+			while(rs.next())
+			{
+				System.out.println("EId : " + rs.getInt("EId") + " , Name : " + rs.getString("EName") + " , Salary : " + rs.getInt("Salary"));
+			}
+			
+			cn.close();
+
+		} catch (Exception e) {
+			System.out.println(e);
+		}
+
+	}
+
+	public static void main(String[] args) {
+		SwingUtilities.invokeLater(new Runnable() {
+	
+			@Override
+			public void run() {
+				new UpdateQuery();
+		
+			}
+		});
+	}
+
+}
+
+//Output
+
+Table before Update
+EId : 1 , Name : Saurabh , Salary : 25000
+EId : 2 , Name : Manik , Salary : 35000
+EId : 3 , Name : Keshl , Salary : 45000
+EId : 4 , Name : Abhishek , Salary : 55000
+Table after Update
+EId : 1 , Name : Saurabh , Salary : 25000
+EId : 2 , Name : Manik , Salary : 35000
+EId : 3 , Name : Keshav , Salary : 45000
+EId : 4 , Name : Abhishek , Salary : 55000

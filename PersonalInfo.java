@@ -1,0 +1,203 @@
+//package CollegePrograms;
+
+import java.awt.EventQueue;
+
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+
+import java.awt.Font;
+
+import javax.swing.JOptionPane;
+import javax.swing.JTextField;
+import javax.swing.JPasswordField;
+import javax.swing.JComboBox;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.JButton;
+
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+import java.beans.Statement;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+
+import jdk.nashorn.internal.scripts.JO;
+
+public class PersonalInfo {
+
+	private JFrame frame;
+	private JTextField txtName;
+	private JLabel lblEmail;
+	private JTextField txtEmail;
+	private JLabel lblCreatePassword;
+	private JPasswordField passwordFieldCreate;
+	private JPasswordField passwordFieldConfirm;
+	private JTextField txtPhoneNo;
+	int id = 4;
+
+	/**
+	 * Launch the application.
+	 */
+	public static void main(String[] args) {
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					PersonalInfo window = new PersonalInfo();
+					window.frame.setVisible(true);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+	}
+
+	/**
+	 * Create the application.
+	 */
+	public PersonalInfo() {
+		initialize();
+	}
+
+	/**
+	 * Initialize the contents of the frame.
+	 */
+	private void initialize() {
+		frame = new JFrame();
+		frame.setFont(new Font("Times New Roman", Font.BOLD, 14));
+		frame.setBounds(100, 100, 478, 526);
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.getContentPane().setLayout(null);
+		
+		JLabel lblPersonalInformation = new JLabel("Personal Information");
+		lblPersonalInformation.setFont(new Font("Times New Roman", Font.BOLD, 20));
+		lblPersonalInformation.setBounds(130, 30, 188, 19);
+		frame.getContentPane().add(lblPersonalInformation);
+		
+		JLabel lblName = new JLabel("Name : ");
+		lblName.setFont(new Font("Times New Roman", Font.BOLD, 16));
+		lblName.setBounds(62, 102, 65, 18);
+		frame.getContentPane().add(lblName);
+		
+		txtName = new JTextField();
+		txtName.setBounds(211, 100, 207, 27);
+		frame.getContentPane().add(txtName);
+		txtName.setColumns(10);
+		
+		lblEmail = new JLabel("E-mail :");
+		lblEmail.setFont(new Font("Times New Roman", Font.BOLD, 16));
+		lblEmail.setBounds(62, 141, 65, 18);
+		frame.getContentPane().add(lblEmail);
+		
+		txtEmail = new JTextField();
+		txtEmail.setColumns(10);
+		txtEmail.setBounds(211, 139, 207, 27);
+		frame.getContentPane().add(txtEmail);
+		
+		lblCreatePassword = new JLabel("Create Password   :");
+		lblCreatePassword.setFont(new Font("Times New Roman", Font.BOLD, 16));
+		lblCreatePassword.setBounds(62, 193, 139, 18);
+		frame.getContentPane().add(lblCreatePassword);
+		
+		passwordFieldCreate = new JPasswordField();
+		passwordFieldCreate.setBounds(211, 191, 207, 27);
+		frame.getContentPane().add(passwordFieldCreate);
+		
+		JLabel lblConfirmPassword = new JLabel("Confirm Password :");
+		lblConfirmPassword.setFont(new Font("Times New Roman", Font.BOLD, 16));
+		lblConfirmPassword.setBounds(62, 231, 139, 18);
+		frame.getContentPane().add(lblConfirmPassword);
+		
+		passwordFieldConfirm = new JPasswordField();
+		passwordFieldConfirm.setBounds(211, 229, 207, 27);
+		frame.getContentPane().add(passwordFieldConfirm);
+		
+		JLabel lblCountry = new JLabel("Country :");
+		lblCountry.setFont(new Font("Times New Roman", Font.BOLD, 16));
+		lblCountry.setBounds(62, 290, 74, 19);
+		frame.getContentPane().add(lblCountry);
+		
+		JComboBox comboBoxCountry = new JComboBox();
+		comboBoxCountry.setModel(new DefaultComboBoxModel(new String[] {"India", "ShriLanka", "South Africa", "America"}));
+		comboBoxCountry.setFont(new Font("Times New Roman", Font.BOLD, 16));
+		comboBoxCountry.setBounds(211, 286, 207, 27);
+		frame.getContentPane().add(comboBoxCountry);
+		
+		JComboBox comboBoxStates = new JComboBox();
+		comboBoxStates.setModel(new DefaultComboBoxModel(new String[] {"Maharashtra", "Goa", "Kerala"}));
+		comboBoxStates.setFont(new Font("Times New Roman", Font.BOLD, 16));
+		comboBoxStates.setBounds(211, 328, 207, 27);
+		frame.getContentPane().add(comboBoxStates);
+		
+		JLabel lblState = new JLabel("State      :    ");
+		lblState.setFont(new Font("Times New Roman", Font.BOLD, 16));
+		lblState.setBounds(62, 332, 86, 19);
+		frame.getContentPane().add(lblState);
+		
+		JLabel lblPhoneNo = new JLabel("Phone No :");
+		lblPhoneNo.setFont(new Font("Times New Roman", Font.BOLD, 16));
+		lblPhoneNo.setBounds(62, 382, 86, 18);
+		frame.getContentPane().add(lblPhoneNo);
+		
+		txtPhoneNo = new JTextField();
+		txtPhoneNo.setColumns(10);
+		txtPhoneNo.setBounds(211, 380, 207, 27);
+		frame.getContentPane().add(txtPhoneNo);
+		
+		JButton btnSubmit = new JButton("Submit");
+		btnSubmit.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				String a, b;
+				a = new String(passwordFieldCreate.getPassword());
+				b = new String(passwordFieldConfirm.getPassword());
+				
+				if(a.equals(b))
+				{
+					try 
+					{
+						Class.forName("oracle.jdbc.driver.OracleDriver");
+						String url = "jdbc:oracle:thin:@localhost:1521:xe";
+						Connection cn = DriverManager.getConnection(url, "system", "system");
+												
+						String sql = "insert into Info values(?, ?, ?, ?, ?, ?)";
+						PreparedStatement ps = cn.prepareStatement(sql);
+						
+						ps.setString(1, Integer.toString(id++));
+						ps.setString(2, txtName.getText());
+						ps.setString(3, txtEmail.getText());
+						ps.setString(4, comboBoxCountry.getSelectedItem().toString());
+						ps.setString(5, comboBoxStates.getSelectedItem().toString());
+						ps.setString(6, txtPhoneNo.getText());
+						
+						ps.execute();
+						JOptionPane.showMessageDialog(null, "Record Successfully stored in database");
+					} 
+					catch (Exception e)
+					{
+						JOptionPane.showMessageDialog(null, e);
+					}
+				}
+				else
+					JOptionPane.showMessageDialog(null, "Error Occured.....Enter password correctly..!");
+			}
+		});
+		btnSubmit.setFont(new Font("Times New Roman", Font.BOLD, 16));
+		btnSubmit.setBounds(108, 440, 86, 27);
+		frame.getContentPane().add(btnSubmit);
+		
+		JButton btnClear = new JButton("Clear");
+		btnClear.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				txtName.setText("");
+				txtEmail.setText("");
+				txtPhoneNo.setText("");
+				passwordFieldCreate.setText("");
+				passwordFieldConfirm.setText("");
+				
+			}
+		});
+		btnClear.setFont(new Font("Times New Roman", Font.BOLD, 16));
+		btnClear.setBounds(237, 440, 86, 27);
+		frame.getContentPane().add(btnClear);
+	}
+}
